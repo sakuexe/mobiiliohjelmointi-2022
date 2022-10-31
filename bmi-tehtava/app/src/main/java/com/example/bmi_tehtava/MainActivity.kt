@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import org.w3c.dom.Text
 import kotlin.math.pow
 
 class MainActivity : AppCompatActivity() {
@@ -24,13 +22,16 @@ class MainActivity : AppCompatActivity() {
         val mainButton = findViewById<Button>(R.id.buttonmain)
         mainButton.setOnClickListener {
             // Function when clicked
+
             var userWeight = findViewById<EditText>(R.id.textWeight).text.toString().toDouble()
             var userHeight = findViewById<EditText>(R.id.textHeight).text.toString().toDouble()
 
             userHeight /= 100
 
-            val BMI = userWeight / (userHeight.pow(2))
-            header.text = "Your Weight: $userWeight, Your Height: $userHeight, so BMI is: $BMI"
+            val bmi = userWeight / (userHeight.pow(2))
+            // Round the answer using .format()
+            // https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/format.html
+            header.text = "Your BMI is: %.2f".format(bmi)
         }
     }
 }
