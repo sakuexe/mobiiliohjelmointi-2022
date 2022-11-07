@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">intent-testing</string>
+    <string name="napinTeksti">Open...</string>
+    <string name="systemButton">System...</string>
+</resources>
