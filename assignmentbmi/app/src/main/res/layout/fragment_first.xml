@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FirstFragment">
+
+    <TextView
+        android:id="@+id/mainTitle"
+        android:layout_width="256dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="11dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/bmi_calculator"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toTopOf="@+id/weight_kg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assignmentNumber" />
+
+    <TextView
+        android:id="@+id/assignmentNumber"
+        android:layout_width="258dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="239dp"
+        android:layout_marginBottom="2dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/assingment_1_3"
+        android:textAlignment="center"
+        android:textColor="#6A4E9C"
+        android:textSize="14sp"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toTopOf="@+id/mainTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/nextButton"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="156dp"
+        android:layout_marginBottom="119dp"
+        android:text="Show results"
+        app:icon="@android:drawable/ic_menu_recent_history"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/height_cm" />
+
+    <Button
+        android:id="@+id/calculateButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="248dp"
+        android:text="@string/calculate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/height_cm"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/weight_kg"
+        android:layout_width="233dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="100dp"
+        android:ems="10"
+        android:hint="@string/weight_kg"
+        android:inputType="number"
+        android:textAlignment="center"
+        android:textColor="#673AB7"
+        android:textColorHint="#757575"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainTitle"
+        android:autofillHints="" />
+
+    <EditText
+        android:id="@+id/height_cm"
+        android:layout_width="233dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="100dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/height_cm"
+        android:inputType="number"
+        android:textAlignment="center"
+        android:textColor="#673AB7"
+        android:textColorHint="#757575"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weight_kg" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
