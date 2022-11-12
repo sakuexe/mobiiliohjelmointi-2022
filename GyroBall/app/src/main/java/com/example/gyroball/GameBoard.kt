@@ -37,7 +37,6 @@ class GameBoard(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         if (y1 + yAcceleration < 2054f && y1 + yAcceleration > 0f) {
             y1 += y * 10
         }
-
         invalidate()    // pyydetään piirtoa
     }
 
