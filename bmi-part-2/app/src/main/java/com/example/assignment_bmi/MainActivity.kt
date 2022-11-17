@@ -22,8 +22,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
+    // initialize variables to put sharedPreferences into
+    lateinit var username: String
+    var userHeight: Double = 150.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        val sharedPref = getDefaultSharedPreferences(this)
+        if (sharedPref != null) {
+            // get value of "signature", if no value, assign "empty"
+            userHeight = sharedPref.getString("height_cm", "150")!!.toDouble()
+            username = sharedPref.getString("username", "Jon Doe")!!
+        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -36,13 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.fab.setOnClickListener { view ->
             // get Default Shared Preferences from the settings page
-            val sharedPref = getDefaultSharedPreferences(this)
-            var sharedText = ""
-            if (sharedPref != null) {
-                // get value of "signature", if no value, assign "empty"
-                sharedText = sharedPref.getString("signature", "empty").toString()
-            }
-            val printedText = "Your set height is: $sharedText \n" +
+            val printedText = "Your set height is: ${userHeight}cm \n" +
                     "You can set this height again from the settings"
             // makes a pop up at the bottom of the screen and gives it text
             Snackbar.make(view, printedText, Snackbar.LENGTH_LONG)
@@ -54,19 +60,31 @@ class MainActivity : AppCompatActivity() {
         title.text = "Weight Index -calculator"
 
         // Calculate button
-        val calculateBtn = findViewById<Button>(R.id.nextButton)
+        val calculateBtn = findViewById<Button>(R.id.calculateButton)
         calculateBtn.setOnClickListener {
             // Function when clicked
 
-            var userWeight = findViewById<EditText>(R.id.weight_kg).text.toString().toDouble()
-            var userHeight = findViewById<EditText>(R.id.height_cm).text.toString().toDouble()
+            val weigthInput = findViewById<EditText>(R.id.weight_kg).text
 
-            userHeight /= 100
+            if (weigthInput.toString() == "") {
+                title.text = "Please insert weight"
+                return@setOnClickListener
+            }
 
-            val bmi = userWeight / (userHeight.pow(2))
+            var userWeight = weigthInput.toString().toDouble()
+
+            var userHeightMeters = userHeight / 100   // Turns height into meters
+
+            val bmi = userWeight / (userHeightMeters.pow(2))
+
             // Round the answer using .format()
             // https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/format.html
             title.text = "Your BMI is: %.2f".format(bmi)
+        }
+
+        val greeting = findViewById<TextView>(R.id.greetingText)
+        if (username != "") {
+            greeting.text = "Welcome back, $username"
         }
     }
 

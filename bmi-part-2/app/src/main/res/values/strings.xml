@@ -30,4 +30,7 @@
     <string name="calculate">Calculate</string>
     <string name="assingment_1_3">Assingment 1/3</string>
     <string name="bmi_calculator">BMI-Calculator</string>
+    <string name="show_results">Show results</string>
+    <string name="assignment_2_3">Assignment 2/3</string>
+    <string name="todo">TODO</string>
 </resources>

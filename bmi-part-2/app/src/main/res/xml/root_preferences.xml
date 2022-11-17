@@ -1,0 +1,19 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="Your information">
+
+        <EditTextPreference
+            app:key="height_cm"
+            app:title="Your height (cm)"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:key="username"
+            app:title="Your name"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
