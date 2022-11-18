@@ -10,9 +10,11 @@ import android.view.View
 class GameBoard(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     private var mainAct : MainActivity? = null
 
-    // Classin globaalit funktiot
+    // Classin globaalit muutuujia
     var x1 : Float = 500f
     var y1 : Float = 500f
+    var width = ""
+    var height = ""
 
     // piirto funktio
     override fun onDraw(canvas: Canvas?) {
@@ -22,14 +24,16 @@ class GameBoard(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         paint.color = Color.MAGENTA
 
         canvas?.drawCircle(x1, y1, 100f, paint)
+        width = canvas?.width.toString()
+        height = canvas?.height.toString()
     }
 
     // asettaa muuttujan arvoja kutsuessa
     // Tehtävä: Aseta xy arvot
     // funktion perään voi kirjoittaa : [datatype], joka kertoo returnatun arvon
     fun setXY(x: Float, y: Float) {
-        var xAcceleration = x * 10
-        var yAcceleration = y * 10
+        var xAcceleration = x
+        var yAcceleration = y
 
         if (x1 - xAcceleration < 1080f && x1 - xAcceleration > 0f) {
             x1 -= x * 10

@@ -24,33 +24,36 @@ class MainActivity : AppCompatActivity() {
 
     // initialize variables to put sharedPreferences into
     lateinit var username: String
-    var userHeight: Double = 150.0
+    lateinit var userHeight: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
+        // get sharedPreferences
         val sharedPref = getDefaultSharedPreferences(this)
         if (sharedPref != null) {
             // get value of "signature", if no value, assign "empty"
-            userHeight = sharedPref.getString("height_cm", "150")!!.toDouble()
+            userHeight = sharedPref.getString("height_cm", "0.0")!!
             username = sharedPref.getString("username", "Jon Doe")!!
         }
 
+        // initialize help button
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.toolbar)
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        // help button's click functionality
         binding.fab.setOnClickListener { view ->
-            // get Default Shared Preferences from the settings page
-            val printedText = "Your set height is: ${userHeight}cm \n" +
-                    "You can set this height again from the settings"
-            // makes a pop up at the bottom of the screen and gives it text
+
+            val printedText =
+                "Your set height is: ${userHeight}cm \n" +
+                        "You can set this height from the settings ⚙"
+
+            // makes a pop up at the bottom of the screen and gives it printedText
             Snackbar.make(view, printedText, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
@@ -61,20 +64,38 @@ class MainActivity : AppCompatActivity() {
 
         // Calculate button
         val calculateBtn = findViewById<Button>(R.id.calculateButton)
+        // Function when clicked
         calculateBtn.setOnClickListener {
-            // Function when clicked
 
             val weigthInput = findViewById<EditText>(R.id.weight_kg).text
 
+            // <[ INPUT GUARD CLAUSES ]>
+
+            // check if userWeight is empty
             if (weigthInput.toString() == "") {
                 title.text = "Please insert weight"
                 return@setOnClickListener
             }
+            // check if userHeight is empty
+            if (userHeight == "") {
+                title.text = "Please insert height from settings"
+                return@setOnClickListener
+            }
+            // check if userHeight is a number value
+            if (userHeight.toDoubleOrNull() == null) {
+                title.text = "Please insert a number as height!"
+                return@setOnClickListener
+            }
+            // check if height is a valid value between 20cm and 300cm
+            if (userHeight.toDouble() < 20.0 || userHeight.toDouble() > 300.0) {
+                title.text = "Please insert valid height from settings"
+                return@setOnClickListener
+            }
 
+            // calculate BMI:
+            // Weight(in KG) % ( Height(in M)^2 )
             var userWeight = weigthInput.toString().toDouble()
-
-            var userHeightMeters = userHeight / 100   // Turns height into meters
-
+            var userHeightMeters = userHeight.toDouble() / 100   // Turns height into meters
             val bmi = userWeight / (userHeightMeters.pow(2))
 
             // Round the answer using .format()
@@ -82,6 +103,7 @@ class MainActivity : AppCompatActivity() {
             title.text = "Your BMI is: %.2f".format(bmi)
         }
 
+        // if username is set, give a greeting above the title
         val greeting = findViewById<TextView>(R.id.greetingText)
         if (username != "") {
             greeting.text = "Welcome back, $username"

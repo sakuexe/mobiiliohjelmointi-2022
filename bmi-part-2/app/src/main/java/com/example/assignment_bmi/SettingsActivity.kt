@@ -1,7 +1,10 @@
 package com.example.assignment_bmi
 
 import android.os.Bundle
+import android.widget.Toolbar
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.preference.PreferenceFragmentCompat
 
 class SettingsActivity : AppCompatActivity() {
