@@ -152,8 +152,8 @@ fun Ball() {
                 x = 950f
             }
             // Bottom limit
-            if (y > 2060f) {
-                y = 2060f
+            if (y > 2080f) {
+                y = 2080f
             }
 
             // Left side limit
