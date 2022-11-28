@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Pre-made colors -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -8,4 +9,10 @@
     <color name="black">#FF000000</color>
     <color name="darkGray">#232323</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- My palette -->
+    <color name="darkGreen">#386641</color>
+    <color name="green">#6a994e</color>
+    <color name="lightGreen">#a7c957</color>
+    <color name="mutedCream">#f2e8cf</color>
+    <color name="mutedRed">#C84344</color>
 </resources>
