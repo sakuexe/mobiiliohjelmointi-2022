@@ -10,18 +10,35 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.finalbmi_3.NavRoutes
 import com.example.finalbmi_3.R
+import com.example.finalbmi_3.datastore.StoreUserData
+import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsCompose() {
-    var userHeight by remember { mutableStateOf("150") }
+
+    // context
+    val context = LocalContext.current
+    // scope
+    val scope = rememberCoroutineScope()
+    // datastore height
+    val datastore = StoreUserData(context)
+    // get saved height
+    val savedHeight = datastore.getHeight.collectAsState(initial = "not found")
+
+    // local variables
+    var userHeight by remember { mutableStateOf("") }
     var userName by remember { mutableStateOf("") }
-    val debuggingText by remember { mutableStateOf("") }
+
+    userHeight = savedHeight.value.toString()
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -51,10 +68,18 @@ fun SettingsCompose() {
                 Text("Your Height:")
                 TextField(
                     value = userHeight,
-                    onValueChange = { userHeight = it},
+                    onValueChange = {
+                        // update textField content
+                        userHeight = it
+                        // save user's height
+                        scope.launch {
+                            datastore.saveHeight(userHeight)
+                        }
+                    },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.NumberPassword
-                    )
+                    ),
+                    maxLines = 1,
                 )
             }
         }
@@ -62,7 +87,7 @@ fun SettingsCompose() {
             Column {
                 Text("Username:")
                 TextField(
-                    value = userName,
+                    value = userHeight,
                     onValueChange = { userName = it},
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text
@@ -70,6 +95,5 @@ fun SettingsCompose() {
                 )
             }
         }
-        Text(debuggingText)
     }
 }

@@ -3,6 +3,7 @@ package com.example.finalbmi_3
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -23,6 +24,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -34,8 +36,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.finalbmi_3.datastore.StoreUserData
 import com.example.finalbmi_3.ui.theme.FinalBMI3Theme
 import com.example.finalbmi_3.ui.theme.SettingsCompose
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 // make a dataclass for nav bar's items
 data class BarItem(
@@ -98,7 +103,6 @@ fun MainCompose() {
         contentColor = colorResource(id = R.color.mutedCream),
         // Background color
         color = colorResource(id = R.color.darkGreen),    ) {
-        Home()
         //Bottom navigation bar
         Scaffold (
             content = { NavigationHost(navController = navController)},
@@ -115,9 +119,10 @@ fun NavigationHost(navController: NavHostController) {
     NavHost(
         navController = navController,
         // choose which page to start in
-        startDestination = NavRoutes.Settings.route,
+        startDestination = NavRoutes.Home.route,
     ) {
         composable(NavRoutes.Home.route) {
+
             Home()
         }
         composable(NavRoutes.History.route) {
@@ -131,8 +136,14 @@ fun NavigationHost(navController: NavHostController) {
 
 @Composable
 fun Home() {
-    var debugText by remember { mutableStateOf("") }
-    var userWeight by remember { mutableStateOf("75") }
+    // context
+    val context = LocalContext.current
+    // datastore height
+    val datastore = StoreUserData(context)
+    // get saved height
+    val savedHeight = datastore.getHeight.collectAsState(initial = "not found")
+
+    var userWeight by remember { mutableStateOf("") }
 
     // debugText = userHeight
 
@@ -144,7 +155,7 @@ fun Home() {
     ) {
         TextField(
             placeholder = { Text("Your weight (in kg)")},
-            value = "",
+            value = userWeight,
             onValueChange = {
                 userWeight = it
             },
@@ -157,6 +168,7 @@ fun Home() {
                 keyboardType = KeyboardType.NumberPassword,
             ),
         )
+        // The "Calculate" button
         Button(
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = colorResource(id = R.color.green),
@@ -167,7 +179,7 @@ fun Home() {
         }) {
             Text(text = "Calculate")
         }
-        Text(text = "DebugText: $debugText")
+        Text(text = "DebugText: ${savedHeight.value}")
     }
 }
 
