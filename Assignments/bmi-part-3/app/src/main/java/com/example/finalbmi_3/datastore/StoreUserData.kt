@@ -18,7 +18,7 @@ class StoreUserData(private val context: Context) {
     }
 
     // to get the email
-    val getHeight: Flow<String?> = context.dataStore.data
+    val getHeight: Flow<String> = context.dataStore.data
         .map { preferences ->
             preferences[USER_HEIGHT_KEY] ?: ""
         }

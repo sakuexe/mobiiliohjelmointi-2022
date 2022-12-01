@@ -1,11 +1,6 @@
 package com.example.quizapp
 
-class Prompts (val question: String, val answers: List<String>, val correctAnswer: String) {
-    @JvmName("getQuestion1")
-    public fun getQuestion(): String {
-        return this.question
-    }
-}
+data class Prompts (val question: String, val answers: List<String>, val correctAnswer: String)
 
 var QuizQuestions = listOf<Prompts>(
     Prompts(

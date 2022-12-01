@@ -87,7 +87,7 @@ fun SettingsCompose() {
             Column {
                 Text("Username:")
                 TextField(
-                    value = userHeight,
+                    value = userName,
                     onValueChange = { userName = it},
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text

@@ -30,6 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.finalbmi_3.datastore.StoreUserData
 import com.example.finalbmi_3.ui.theme.FinalBMI3Theme
 import com.example.finalbmi_3.ui.theme.SettingsCompose
+import kotlin.math.pow
 
 // make a dataclass for nav bar's items
 data class BarItem(
@@ -130,11 +131,13 @@ fun Home() {
     // datastore height
     val datastore = StoreUserData(context)
     // get saved height
-    val savedHeight = datastore.getHeight.collectAsState(initial = "not found")
+    val savedHeight = datastore.getHeight.collectAsState(initial = "")
 
     var userWeight by remember { mutableStateOf("") }
-
-    // debugText = userHeight
+    // BMI
+    var BMI by remember { mutableStateOf("") }
+    // BMI show toggle
+    var BMIstatusText by remember { mutableStateOf("") }
 
     MainTitle()
     Column (
@@ -142,6 +145,7 @@ fun Home() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
+        Box(modifier = Modifier.height(100.dp))
         TextField(
             placeholder = { Text("Your weight (in kg)")},
             value = userWeight,
@@ -165,10 +169,27 @@ fun Home() {
                 ),
             onClick = {
                 // counter += 1
+                if(savedHeight.value != "") {
+                    var tempHeight = savedHeight.value.toDouble()
+                    val tempWeight = userWeight.toDouble()
+                    // convert height (cm) to meters
+                    tempHeight /= 100
+                    // calculate the BMI: weight(kg) / height^2(m)
+                    // format BMI to have 2 decimals
+                    BMI = "%.2f".format(tempWeight / tempHeight.pow(2))
+
+                    // show bmi flavor text
+                    if(BMIstatusText == "") {
+                        BMIstatusText = "Your BMI is:"
+                    }
+                }
+
         }) {
             Text(text = "Calculate")
         }
-        Text(text = "DebugText: ${savedHeight.value}")
+        // Text(text = "DebugText: ${savedHeight.value} BMI: $BMI")
+        Text(text = BMIstatusText)
+        Text(text = BMI, fontSize = 50.sp, fontWeight = FontWeight.Black)
     }
 }
 
