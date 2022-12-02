@@ -1,6 +1,7 @@
 package com.example.finalbmi_3.ui.theme
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -9,10 +10,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -20,8 +25,10 @@ import androidx.navigation.NavHostController
 import com.example.finalbmi_3.NavRoutes
 import com.example.finalbmi_3.R
 import com.example.finalbmi_3.datastore.StoreUserData
+import com.example.finalbmi_3.isValidInput
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SettingsCompose() {
 
@@ -37,8 +44,11 @@ fun SettingsCompose() {
     // local variables
     var userHeight by remember { mutableStateOf("") }
     var userName by remember { mutableStateOf("") }
+    var showError by remember { mutableStateOf(false) }
 
-    userHeight = savedHeight.value.toString()
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    userHeight = savedHeight.value
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -69,6 +79,7 @@ fun SettingsCompose() {
                 TextField(
                     value = userHeight,
                     onValueChange = {
+                        // showError = false
                         // update textField content
                         userHeight = it
                         // save user's height
@@ -77,10 +88,23 @@ fun SettingsCompose() {
                         }
                     },
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.NumberPassword
+                        keyboardType = KeyboardType.NumberPassword,
+                        imeAction = ImeAction.Done
                     ),
-                    maxLines = 1,
+                    keyboardActions = KeyboardActions(
+                        onDone =   {
+                            keyboardController?.hide()
+                            // if show error is true, return without doing anything else
+                            showError = !isValidInput(userHeight)
+                            if (showError) return@KeyboardActions
+                        }
+                    ),
+                    isError = showError,
+                    singleLine = true,
                 )
+                if(showError) {
+                    Text(text = "Height is invalid")
+                }
             }
         }
         Box {

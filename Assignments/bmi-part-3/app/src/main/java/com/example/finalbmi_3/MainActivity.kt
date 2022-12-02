@@ -30,6 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.finalbmi_3.datastore.StoreUserData
 import com.example.finalbmi_3.ui.theme.FinalBMI3Theme
 import com.example.finalbmi_3.ui.theme.SettingsCompose
+import java.util.regex.Pattern
 import kotlin.math.pow
 
 // make a dataclass for nav bar's items
@@ -60,15 +61,18 @@ object NavBarItems {
     )
 }
 
-// creating a variable for SharedPreferences
-lateinit var sharedPreferences: SharedPreferences
+// Regex check for weight and height inputs
+fun isValidInput(inputString: String?) =
+    // accept only number inputs that are from 1 digit to 3 digits long
+    Pattern.compile(
+        "^[0-9]{1,3}$"
+    ).matcher(inputString).find()
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            sharedPreferences = getSharedPreferences(this.toString(), Context.MODE_PRIVATE)
-
             FinalBMI3Theme {
                 // A surface container using the 'background' color from the theme
                 Surface(
