@@ -15,4 +15,10 @@
     <color name="lightGreen">#a7c957</color>
     <color name="mutedCream">#f2e8cf</color>
     <color name="mutedRed">#C84344</color>
+    <!-- BMI Indicator colors -->
+    <color name="underweightBlue">#4364C8</color>
+    <color name="normalGreen">#57C843</color>
+    <color name="overweightYellow">#CDB539</color>
+    <color name="obeseOrange">#C86D43</color>
+    <color name="extremelyObeseRed">#C84344</color>
 </resources>

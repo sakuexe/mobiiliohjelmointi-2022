@@ -172,7 +172,6 @@ fun Home() {
                 // contentColor = colorResource(id = R.color.darkGray)
                 ),
             onClick = {
-                // counter += 1
                 if(savedHeight.value != "") {
                     var tempHeight = savedHeight.value.toDouble()
                     val tempWeight = userWeight.toDouble()
@@ -186,6 +185,7 @@ fun Home() {
                     if(BMIstatusText == "") {
                         BMIstatusText = "Your BMI is:"
                     }
+                    saveJsonList(BMI, context)
                 }
 
         }) {
@@ -218,10 +218,10 @@ fun MainTitle() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    FinalBMI3Theme {
-        MainCompose()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun DefaultPreview() {
+    //FinalBMI3Theme {
+        //MainCompose()
+    //}
+//}
