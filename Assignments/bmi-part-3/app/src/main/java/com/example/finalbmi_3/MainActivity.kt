@@ -185,7 +185,7 @@ fun Home() {
                     if(BMIstatusText == "") {
                         BMIstatusText = "Your BMI is:"
                     }
-                    saveJsonList(BMI, context)
+                    saveToJson(context, BMI)
                 }
 
         }) {

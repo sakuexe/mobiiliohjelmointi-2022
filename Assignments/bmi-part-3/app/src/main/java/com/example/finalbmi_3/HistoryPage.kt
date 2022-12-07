@@ -5,32 +5,25 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.finalbmi_3.ui.theme.FinalBMI3Theme
-import com.example.finalbmi_3.ui.theme.Shapes
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.File
+import java.io.FileReader
 import java.io.FileWriter
 import java.io.PrintWriter
 
@@ -39,7 +32,7 @@ fun HistoryCompose() {
     // bmiHistory = mutableListOf("25", "22", "35")
     val context = LocalContext.current
     var debugText by remember { mutableStateOf("") }
-    debugText = getJsonList(context).toString()
+    // debugText = getJsonList(context).toString()
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -71,7 +64,7 @@ fun HistoryCompose() {
 @Composable
 fun ShowBMIData() {
     val context = LocalContext.current
-    val bmiList = remember { getJsonList(context = context) }
+    val bmiList = remember { returnJsonList(context = context) }
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
@@ -124,26 +117,31 @@ fun ShowBMIData() {
     }
 }
 
-fun saveJsonList(bmiValue: String, context: Context) {
-    val bmiHistoryList = getJsonList(context)
-    bmiHistoryList.add(bmiValue)
-    val jsonString = Gson().toJson(bmiHistoryList)
-    val jsonFile = File("bmi-history.json")
-    jsonFile.writeText(jsonString)
+fun returnJsonList(context: Context): MutableList<String> {
+    val gson = Gson()
+    val jsonFile = File(context.filesDir, "bmi-history.json")
+    val jsonReader = FileReader(jsonFile)
+    val type = object : TypeToken<MutableList<String>>() {}.type
+    return gson.fromJson(jsonReader, type)
 }
 
-fun getJsonList(context: Context): MutableList<String> {
-    lateinit var jsonString: String
-    try {
-        jsonString = context.assets.open("bmi-history.json")
-            .bufferedReader()
-            .use {it.readText()}
-    } catch (error: Error) {
-        println(error)
-        return mutableListOf("not found")
+fun saveToJson(context: Context, bmiValue: String) {
+    // thank you github copilot for this help
+    // first let's assign a variable for the bmi history data
+    val bmiList: MutableList<String> = try {
+        // if there is already a file that returns the data
+        // we will use that as a base
+        returnJsonList(context)
+    } catch (e: Exception) {
+        // if there is no file, let's assign the variable as an empty mutable list
+        mutableListOf()
     }
-    val listType = object : TypeToken<MutableList<String>>() {}.type
-    return Gson().fromJson(jsonString, listType)
+    bmiList.add(bmiValue)
+    val jsonString = Gson().toJson(bmiList)
+    val file = File(context.filesDir, "bmi-history.json")
+    val printWriter = PrintWriter(FileWriter(file))
+    printWriter.print(jsonString)
+    printWriter.close()
 }
 
 @Preview(showBackground = true)
