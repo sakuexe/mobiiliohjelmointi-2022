@@ -15,6 +15,7 @@
     <color name="lightGreen">#a7c957</color>
     <color name="mutedCream">#f2e8cf</color>
     <color name="mutedRed">#C84344</color>
+    <color name="shadowGreen">#480C170F</color>
     <!-- BMI Indicator colors -->
     <color name="underweightBlue">#4364C8</color>
     <color name="normalGreen">#57C843</color>

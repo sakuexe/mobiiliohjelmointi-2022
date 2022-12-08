@@ -1,7 +1,5 @@
 package com.example.finalbmi_3
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,6 +10,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.List
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -116,7 +116,6 @@ fun NavigationHost(navController: NavHostController) {
         startDestination = NavRoutes.Home.route,
     ) {
         composable(NavRoutes.Home.route) {
-
             Home()
         }
         composable(NavRoutes.History.route) {
@@ -207,21 +206,29 @@ fun MainTitle() {
     ){
         Text(
             text = "BMI Assignment #3/3",
-            fontWeight = FontWeight.Bold,
-            color = colorResource(id = R.color.lightGreen)
+            color = colorResource(id = R.color.mutedCream),
         )
-        Text(
-            text = "BMI Calculator",
-            fontWeight = FontWeight.Black,
-            fontSize = 40.sp,
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = Icons.Outlined.Home,
+                contentDescription = "Home",
+                tint = colorResource(id = R.color.lightGreen),
+                modifier = Modifier.size(40.dp)
+            )
+            Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+            Text(
+                text = "BMI Calculator",
+                fontWeight = FontWeight.Black,
+                fontSize = 40.sp,
+            )
+        }
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun DefaultPreview() {
-    //FinalBMI3Theme {
-        //MainCompose()
-    //}
-//}
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    FinalBMI3Theme {
+        MainCompose()
+    }
+}

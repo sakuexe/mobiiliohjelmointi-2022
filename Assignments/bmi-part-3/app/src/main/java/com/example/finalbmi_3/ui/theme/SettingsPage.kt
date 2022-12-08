@@ -3,16 +3,15 @@ package com.example.finalbmi_3.ui.theme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
@@ -21,8 +20,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import com.example.finalbmi_3.NavRoutes
+import androidx.compose.ui.zIndex
 import com.example.finalbmi_3.R
 import com.example.finalbmi_3.datastore.StoreUserData
 import com.example.finalbmi_3.isValidInput
@@ -43,7 +41,6 @@ fun SettingsCompose() {
 
     // local variables
     var userHeight by remember { mutableStateOf("") }
-    var userName by remember { mutableStateOf("") }
     var showError by remember { mutableStateOf(false) }
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -51,28 +48,47 @@ fun SettingsCompose() {
     userHeight = savedHeight.value
 
     Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 60.dp)
+            .zIndex(1f),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ){
+        Text(
+            text = "BMI Calculator",
+            color = colorResource(id = R.color.mutedCream)
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        )
+        {
+            Icon(
+                imageVector = Icons.Outlined.Settings,
+                contentDescription = "Settings",
+                tint = colorResource(id = R.color.lightGreen),
+                modifier = Modifier.size(40.dp)
+            )
+            Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+            Text(
+                text = "Settings",
+                fontWeight = FontWeight.Black,
+                fontSize = 40.sp,
+                style = MaterialTheme.typography.h4.copy(
+                    shadow = Shadow(
+                        color = colorResource(R.color.shadowGreen),
+                        offset = Offset(0f, 10f),
+                        blurRadius = 8f,
+                    )
+                )
+            )
+        }
+    }
+
+    Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            // Align Text and the icon to the same level
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Settings,
-                contentDescription = "settings",
-                tint = colorResource(id = R.color.mutedRed),
-                modifier = Modifier
-                    .size(45.dp)
-                    .padding(end = 5.dp),
-            )
-            Text("Settings",
-                fontSize = 40.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
         Box {
             Column {
                 Text("Your Height:")
@@ -105,18 +121,6 @@ fun SettingsCompose() {
                 if(showError) {
                     Text(text = "Height is invalid")
                 }
-            }
-        }
-        Box {
-            Column {
-                Text("Username:")
-                TextField(
-                    value = userName,
-                    onValueChange = { userName = it},
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text
-                    )
-                )
             }
         }
     }

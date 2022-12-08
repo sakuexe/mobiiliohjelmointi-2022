@@ -1,25 +1,31 @@
 package com.example.finalbmi_3
 
+import android.annotation.SuppressLint
 import android.content.Context
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.List
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import com.example.finalbmi_3.ui.theme.FinalBMI3Theme
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.File
@@ -29,10 +35,6 @@ import java.io.PrintWriter
 
 @Composable
 fun HistoryCompose() {
-    // bmiHistory = mutableListOf("25", "22", "35")
-    val context = LocalContext.current
-    var debugText by remember { mutableStateOf("") }
-    // debugText = getJsonList(context).toString()
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -42,29 +44,62 @@ fun HistoryCompose() {
     ){
         Text(
             text = "This is your",
-            fontWeight = FontWeight.Bold,
-            color = colorResource(id = R.color.lightGreen)
+            color = colorResource(id = R.color.mutedCream)
         )
-        Text(
-            text = "BMI History",
-            fontWeight = FontWeight.Black,
-            fontSize = 40.sp,
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = Icons.Outlined.List,
+                contentDescription = "History",
+                tint = colorResource(id = R.color.lightGreen),
+                modifier = Modifier.size(40.dp)
+            )
+            Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+            Text(
+                text = "BMI History",
+                fontWeight = FontWeight.Black,
+                fontSize = 40.sp,
+                style = MaterialTheme.typography.h4.copy(
+                    shadow = Shadow(
+                        color = colorResource(R.color.shadowGreen),
+                        offset = Offset(0f, 10f),
+                        blurRadius = 8f,
+                    )
+                )
+            )
+        }
     }
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = 150.dp),
+            .padding(bottom = 100.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom
     ) {
         ShowBMIData()
     }
 }
+
+@SuppressLint("MutableCollectionMutableState")
 @Composable
 fun ShowBMIData() {
     val context = LocalContext.current
-    val bmiList = remember { returnJsonList(context = context) }
+    var bmiList by remember { mutableStateOf(returnJsonList(context)) }
+    bmiList = returnJsonList(context = context)
+    if (bmiList.size < 1) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 80.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "No history found",
+                fontSize = 20.sp,
+            )
+        }
+        return
+    }
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
@@ -73,8 +108,10 @@ fun ShowBMIData() {
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(items = bmiList, itemContent = { bmiValue ->
-            val boxHeight = (bmiValue.toDouble() * 12).dp
+            val boxHeight = (bmiValue.toDouble() * 10).dp
             var columnColor: Color = colorResource(id = R.color.darkGray)
+            // check the bmi value and color the column rectangle accordingly
+            // this makes it easier for the user to understand the meaning of the bmi values
             when (bmiValue.toDouble()) {
                 // 1.0 - 18.5
                 in 1.0..18.5 -> {
@@ -115,14 +152,45 @@ fun ShowBMIData() {
             }
         })
     }
+    OutlinedButton(
+        modifier = Modifier
+            .padding(top = 10.dp),
+        colors = ButtonDefaults.outlinedButtonColors(
+            backgroundColor = Color.Transparent,
+            contentColor = colorResource(id = R.color.mutedCream),
+        ),
+        border = BorderStroke(2.dp, colorResource(id = R.color.mutedCream)),
+        onClick = {
+            // remove the data from the bmi-history.json file
+            removeJson(context = context)
+            // re-assign the new empty list to the bmiList variable
+            // so that the history will be drawn again
+            bmiList = returnJsonList(context = context)
+    }) {
+        Icon(
+            imageVector = Icons.Outlined.Delete,
+            contentDescription = "Delete",
+            tint = colorResource(id = R.color.mutedCream),
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+        Text(text = "Clear History")
+    }
 }
 
 fun returnJsonList(context: Context): MutableList<String> {
     val gson = Gson()
-    val jsonFile = File(context.filesDir, "bmi-history.json")
-    val jsonReader = FileReader(jsonFile)
-    val type = object : TypeToken<MutableList<String>>() {}.type
-    return gson.fromJson(jsonReader, type)
+    // try to open the bmi-history file if it exists
+    // and then return the contents as a mutable list
+    return try {
+        val jsonFile = File(context.filesDir, "bmi-history.json")
+        val jsonReader = FileReader(jsonFile)
+        val type = object : TypeToken<MutableList<String>>() {}.type
+        gson.fromJson(jsonReader, type)
+    } catch (e: Exception) {
+        // if file was not found, return an empty mutable list
+        mutableListOf()
+    }
 }
 
 fun saveToJson(context: Context, bmiValue: String) {
@@ -144,10 +212,9 @@ fun saveToJson(context: Context, bmiValue: String) {
     printWriter.close()
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    FinalBMI3Theme {
-        HistoryCompose()
-    }
+fun removeJson(context: Context) {
+    // remove the file that holds the bmi history data
+    // therefore removing the history
+    val file = File(context.filesDir, "bmi-history.json")
+    file.delete()
 }
