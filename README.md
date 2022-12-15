@@ -121,12 +121,12 @@ If I made this quiz app now, I would've made a couple of things differently, for
 
 ```json
   {
-    question: "Who was the first Formula 1 World Champion?",
-    answers: {
-      { answer: "Nikki Lauda", score: 0},
-      { answer: "Graham Hill", score: 0},
-      { answer: "Qiueseppe Farina", score: 1},
-      { answer: "Juan Manuel Fangio", score: 0},
+    "question": "Who was the first Formula 1 World Champion?",
+    "answers": {
+      { "answer": "Nikki Lauda", "score": 0},
+      { "answer": "Graham Hill", "score": 0},
+      { "answer": "Qiueseppe Farina", "score": 1},
+      { "answer": "Juan Manuel Fangio", "score": 0},
     }
   }
 ```
