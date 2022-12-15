@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = colorResource(id = R.color.darkGreen)
+                    color = colorResource(id = R.color.mutedCream)
                 ) {
                     MainCompose()
                 }
@@ -95,7 +95,6 @@ fun MainCompose() {
             .fillMaxSize(),
         // Foreground color
         contentColor = colorResource(id = R.color.mutedCream),
-        // Background color
         color = colorResource(id = R.color.darkGreen),    ) {
         //Bottom navigation bar
         Scaffold (
@@ -103,7 +102,8 @@ fun MainCompose() {
             bottomBar = { BottomNavigationBar(
                 navController = navController,
             )},
-            backgroundColor = colorResource(id = R.color.darkGreen)
+            // Background color
+            backgroundColor = colorResource(id = R.color.darkGreen),
         )
     }
 }

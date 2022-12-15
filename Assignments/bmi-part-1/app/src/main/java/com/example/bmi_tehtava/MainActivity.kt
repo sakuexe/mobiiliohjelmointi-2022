@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
             var userHeight = findViewById<EditText>(R.id.textHeight).text.toString().toDouble()
 
             userHeight /= 100
-
             val bmi = userWeight / (userHeight.pow(2))
             // Round the answer using .format()
             // https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/format.html
