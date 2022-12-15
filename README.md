@@ -4,13 +4,13 @@
 
 By **Saku Karttunen**
 
-#### About
+#### **About**
 
 This repository includes exercises from the classes and assignments from HAMK Riihimäki's "Mobile Programming 2022" -course.
 
-- Teacher and course organizer: Toni Laitinen
-- Course duration: 24/10/ - 16/12/2022
-- Editors used: Android Studio and Visual Studio Code
+- Teacher and course organizer: **Toni Laitinen**
+- Course duration: **24/10/ - 16/12/2022**
+- Editors used: **Android Studio** and **Visual Studio Code**
 
 ## Assignments
 
